@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-insert="~{fragments/snippets :: head}">
+</head>
+<body>
+    <nav data-th-replace="~{fragments/snippets :: navbar}"></nav>
+    <div class="container">
+        <p class="lead">Welcome to the Keycloak Push MFA Extension Simulator. This tool mocks the push-based multi-factor authentication process for development and testing purposes.</p>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4 h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">Enrollment</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This part simulates the process of registering a device for push-based multi-factor authentication. Users can enroll their devices to receive push notifications for MFA challenges.</p>
+                        <a href="/enroll" class="btn btn-primary">Go to Enrollment</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4 h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">Complete Login</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">This simulates the completion of the login process after receiving a push notification. It handles the verification and finalization of the MFA step. When a valid request is made to /completeLogin, it triggers a push notification from Keycloak to the enrolled device.</p>
+                        <a href="/completeLogin" class="btn btn-primary">Go to Complete Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer data-th-replace="~{fragments/snippets :: footer}"></footer>
+</body>
+</html>

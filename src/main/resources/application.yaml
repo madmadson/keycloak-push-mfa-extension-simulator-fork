@@ -1,0 +1,67 @@
+debug: false
+trace: false
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] [%-5level] %class{36}.%M | %msg%n"
+  level:
+    de.ba: debug
+    root: info
+
+app:
+  basepath: /
+  web:
+    title: "PushMFA-Simulator"
+  env: "dev"
+
+server:
+  port: 5000
+
+security:
+  jwk:
+    private-key-location: classpath:keys/rsa-jwk.json
+
+spring:
+  application:
+    name: "pushmfa-simulator"
+    version: "latest"
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  threads:
+    virtual:
+      enabled: true
+  main:
+    banner-mode: off
+  jackson:
+    mapper:
+      accept-case-insensitive-properties: true
+  thymeleaf:
+    prefix: "classpath:views/"
+    cache: false
+    suffix: .html
+  web:
+    resources:
+      cache:
+        period: 0
+      static-locations: "classpath:static"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        add-additional-paths: true
+  health:
+    defaults:
+      enabled: true
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

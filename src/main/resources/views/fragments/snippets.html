@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head data-th-fragment="head">
+    <title data-th-text="${@environment.getProperty('app.web.title')}">Title</title>
+    <link rel="stylesheet" type="text/css" data-th-href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" data-th-href="@{/css/layout.css}">
+</head>
+<body>
+<!-- ************************************************************************************** -->
+<nav class="navbar navbar-dark mb-4" data-th-fragment="navbar">
+    <div class="container">
+        <span class="h1" data-th-text="${@environment.getProperty('app.web.title')}"></span>
+        <span class="ms-auto">Umgebung: <strong data-th-text="${@environment.getProperty('app.env')}">xxx</strong></span>
+    </div>
+</nav>
+<!-- ************************************************************************************** -->
+<footer class="mt-3 py-3" data-th-fragment="footer">
+    <script src="" data-th-src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="module" th:src="@{/js/main.bundle.js}"></script>
+    <script>
+        window.ENV = {
+            basePath: '${@environment.getProperty("app.basepath", "/")}',
+            apiUrl: '${@environment.getProperty("app.api.url", "http://localhost:8080")}',
+            realmBase: '${@environment.getProperty("app.realm.base", "http://localhost:8080/realms/OCP")}',
+            enrollCompleteUrl: '${@environment.getProperty("app.enroll.complete.url", "http://localhost:8080/realms/OCP/push-mfa/enroll/complete")}',
+            tokenEndpoint: '${@environment.getProperty("app.token.endpoint", "http://localhost:8080/realms/OCP/protocol/openid-connect/token")}',
+            challengeUrl: '${@environment.getProperty("app.challenge.url", "http://localhost:8080/realms/OCP/push-mfa/login/challenges/CHALLENGE_ID/respond")}',
+        };
+    </script>
+    <div class="container">
+        <span class="h4" data-th-text="${@environment.getProperty('spring.application.name')}">PushMFA-simulator</span>
+        <span class="ms-3" style="color:#D9D3C7;" data-th-text="${@environment.getProperty('spring.application.version')}">0.0</span>
+    </div>
+</footer>
+</body>
+</html>

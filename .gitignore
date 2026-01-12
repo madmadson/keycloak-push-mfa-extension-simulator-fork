@@ -1,0 +1,11 @@
+/target/
+/work/
+/.idea/
+/src/main/main.iml
+/src/test/test.iml
+/.vscode/
+
+node
+node_modules/
+/src/main/resources/static/js/
+/src/main/resources/static/keys/

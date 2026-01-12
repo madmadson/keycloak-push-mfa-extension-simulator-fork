@@ -1,0 +1,17 @@
+
+{
+  "name": "keycloak-push-mfa-extension-simulator",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "esbuild src/main/resources/static/ts/main.ts --bundle --format=esm --target=es2020 --outfile=src/main/resources/static/js/main.bundle.js --sourcemap --watch"
+  },
+  "dependencies": {
+    "jose": "5.9.3",
+    "uuid": "13.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "esbuild": "0.27.1"
+  }
+}
