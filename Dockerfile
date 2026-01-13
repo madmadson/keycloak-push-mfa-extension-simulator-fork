@@ -9,7 +9,7 @@ COPY package-lock.json .
 COPY build.mjs .
 COPY src ./src
 # Build the application using Maven
-RUN mvn clean package
+RUN mvn -B clean package
 
 
 # Use an official OpenJDK image as the base image
