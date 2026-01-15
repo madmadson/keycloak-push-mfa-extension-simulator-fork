@@ -47,7 +47,7 @@ onReady(() => {
       const formData = new FormData();
       formData.append("token", _token);
       if (_context) formData.append("context", _context);
-      formData.append("_iamUrl", _iamUrl ? _iamUrl.toString() : "http://localhost:8080/realms/demo/push-mfa/enroll/complete");
+      formData.append("_iamUrl", _iamUrl ? _iamUrl.toString() + '/push-mfa/enroll/complete' : "http://localhost:8080/realms/demo/push-mfa/enroll/complete");
 
       const response = await fetch("/enroll/complete", {
         method: "POST",

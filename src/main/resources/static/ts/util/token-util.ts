@@ -1,6 +1,5 @@
 import {
   decodeJwt,
-  exportJWK,
   importJWK,
   JWTHeaderParameters,
   JWTPayload,
@@ -29,6 +28,7 @@ export type DpopPayload = {
   deviceId?: string;
   credId?: string;
   action?: string;
+  userVerification?: string;
 };
 
 export type EnrollmentValues = {
@@ -40,6 +40,7 @@ export type EnrollmentValues = {
 export type ConfirmLoginValues = {
   challengeId: string;
   userId: string;
+  userVerification?: string;
 };
 
 export function unpackEnrollmentToken(token: string): EnrollmentValues | null {
@@ -105,6 +106,26 @@ export function unpackLoginConfirmToken(
   return { challengeId, userId };
 }
 
+export function extractUserIdFromCredentialId(credentialId: string): string | null {
+  const aliasIndex = credentialId.indexOf(DEVICE_ALIAS);
+  if (aliasIndex < 0) {
+    return null;
+  }
+  return credentialId.slice(aliasIndex + DEVICE_ALIAS.length);
+}
+
+export async function createDpopProof(credentialId: string, method: string, htu: string) {
+  const userId = extractUserIdFromCredentialId(credentialId) ?? credentialId;
+
+  const dpopTokenPayload: DpopPayload = {
+    htm: method,
+    htu: htu,
+    sub: userId,
+    deviceId: DEVICE_STATIC_ID,
+  };
+
+  return await createDpopJwt(dpopTokenPayload);
+}
 
 export async function createConfirmJwt(payload: DpopPayload) {
   const exp = Math.floor(Date.now() / 1000) + 300;
@@ -134,13 +155,18 @@ export async function createAccessToken(userId: string, htu: string) {
 export async function createChallengeToken(
   userId: string,
   challengeId: string,
+  action: string = 'approve',
+  userVerification?: string,
 ) {
   const body: DpopPayload = {
     cid: challengeId,
     credId: userId,
     deviceId: DEVICE_STATIC_ID,
-    action: "approve",
+    action: action,
   };
+  if (userVerification && userVerification.trim().length > 0) {
+    body.userVerification = userVerification;
+  }
   return await createConfirmJwt(body);
 }
 

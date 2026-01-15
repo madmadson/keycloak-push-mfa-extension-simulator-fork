@@ -4,7 +4,7 @@ import esbuild from "esbuild";
 const entryPoints = {
   "info": "src/main/resources/static/ts/pages/info.ts",
   "enroll": "src/main/resources/static/ts/pages/enroll.ts",
-  "login": "src/main/resources/static/ts/pages/login.ts"
+  "confirm": "src/main/resources/static/ts/pages/confirm.ts"
 };
 
 esbuild.build({

@@ -2,13 +2,12 @@
 
 export const DEVICE_CLIENT_ID = "push-device-client";
 export const DEVICE_CLIENT_SECRET = "device-client-secret";
+import { ENROLL_COMPLETE } from "./urls.js";
 
 export async function postEnrollComplete(enrollReplyToken: string, url?:  URL) {
 
-  let enrollmentCompleteEndpoint = url ? url.toString() : "";
-
   return await post(
-      enrollmentCompleteEndpoint,
+      url?.toString() + ENROLL_COMPLETE,
     { "Content-Type": "application/json" },
     JSON.stringify({ token: enrollReplyToken }),
   );
@@ -42,6 +41,18 @@ export async function postChallengesResponse(
     token: token,
   };
   return await post(url, header, JSON.stringify(body));
+}
+
+export async function getPendingChallenges(url: string, dPop: string, accessToken: string) {
+  const header = {
+    Authorization: `DPoP ${accessToken}`,
+    Accept: 'application/json',
+    DPoP: dPop,
+  };
+  return await fetch(url, {
+    method: 'GET',
+    headers: header,
+  });
 }
 
 async function post(

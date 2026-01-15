@@ -54,9 +54,9 @@
                         <label for="iam-url" class="form-label">
                             <b>URL IdentityManagement:</b>
                         </label>
-                        <input id="iam-url" type="text" class="form-control"  placeholder="e.g. http://myIam/main/auth/realms/OCP/push-mfa/enroll/complete" />
-                        <small class="form-text text-muted">e.g. http://localhost:8080/realms/OCP/push-mfa/enroll/complete</small>
-                        <small class="form-text text-muted">or https://sso.dev.ocp.webapp.idst.ibaintern.de/main/auth/realms/OCP/push-mfa/enroll/complete</small>
+                        <input id="iam-url" type="text" class="form-control"  placeholder="e.g. http://myIam/main/auth/realms/OCP" />
+                        <small class="form-text text-muted">e.g. http://localhost:8080/realms/OCP</small>
+                        <small class="form-text text-muted">or https://sso.dev.ocp.webapp.idst.ibaintern.de/main/auth/realms/OCP</small>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="context" class="form-label">
@@ -76,7 +76,7 @@
                         <br><small class="text-muted">rsa-jwk.json must be placed in the mock's key folder! (static/keys)</small>
                         <br><small class="text-muted">Simulates the frontend enrollment process for Push-MFA, handling device registration on the client side.</small>
                     </div>
-                     <div class="mb-4">
+                    <div class="mb-4">
                         <button id="enrollBtnBackend" class="btn btn-primary me-2">Enroll Backend</button>
                         <br><small class="text-muted">* Simulates the backend enrollment process for Push-MFA, processing the enrollment on the server side.</small>
                     </div>

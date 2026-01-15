@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-insert="~{fragments/snippets :: head}"></head>
+<script type="module" th:src="@{__${basepath}__/js/confirm.bundle.js}"></script>
+<body>
+    <nav data-th-replace="~{fragments/snippets :: navbar}"></nav>
+    <div class="container">
+    <h1 class="my-3">Confirm Login</h1>
+    <p class="lead">Simulate the confirm-login process for push-based multi-factor authentication.</p>
+    
+     <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="card-title">Confirm-Login Form</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="token" class="form-label">
+                    <b>Keycloak Token (JWS):</b>
+                </label>
+                <textarea id="token" class="form-control" rows="4" placeholder="eyJhbGciOi..."></textarea>
+            </div>
+             <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="iam-url" class="form-label">
+                        <b>URL IdentityManagement:</b>
+                    </label>
+                    <input id="iam-url" type="text" class="form-control"  placeholder="e.g. http://myIam/main/auth/realms/OCP" />
+                    <small class="form-text text-muted">e.g. http://localhost:8080/realms/OCP</small>
+                    <small class="form-text text-muted">or https://sso.dev.ocp.webapp.idst.ibaintern.de/main/auth/realms/OCP</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="context" class="form-label">
+                        <b>Enter context [optional]:</b>
+                    </label>
+                    <input id="context" type="text" class="form-control" placeholder="e.g. deviceXY" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="userVerification" class="form-label">
+                         <b>User verification (number/PIN) [optional]:</b>
+                    </label>
+                    <input id="userVerification" type="text" class="form-control"  placeholder="e.g. 42 or 0123" />
+                </div>
+             </div>
+            <div class="mb-4">
+                <button id="confirmBtn" class="btn btn-primary me-2">Confirm Frontend</button>
+                <br><small class="text-muted">Does only works if mock is deployed on same host (CORS)!</small>
+                <br><small class="text-muted">rsa-jwk.json must be placed in the mock's key folder! (static/keys)</small>
+                <br><small class="text-muted">Simulates the frontend login confirm for Push-MFA.</small>
+            </div>
+             <div class="mb-4">
+                <button id="confirmBtnBackend" class="btn btn-primary me-2">Confirm Backend</button>
+                <br><small class="text-muted">* Simulates the backend login confirm process for Push-MFA.</small>
+            </div>
+        </div>
+         <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Answer</h5>
+            </div>
+            <div class="card-body">
+                <pre id="out" class="result bg-light p-3 rounded">No interactions yet.</pre>
+            </div>
+        </div>
+        
+        <details open>
+            <summary><b>Configuration</b></summary>
+            <pre class="result bg-light p-3 rounded" id="cfg"></pre>
+        </details>
+    </div>
+      
+    <footer data-th-replace="~{fragments/snippets :: footer}"></footer>
+</body>
+</html>
