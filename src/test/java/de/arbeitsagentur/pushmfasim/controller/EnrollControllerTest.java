@@ -183,10 +183,14 @@ class EnrollControllerTest {
     @SuppressWarnings("null")
     @Test
     void testSuccessfulEnrollmentWithCustomIamUrl() throws Exception {
-        String customUrl = "https://custom-keycloak.example.com/realms/demo/push-mfa/enroll/complete";
+        String customUrl = "https://custom-keycloak.example.com/realms/demo";
         ResponseEntity<String> keycloakResponse = new ResponseEntity<>("{\"status\": \"success\"}", HttpStatus.OK);
 
-        when(restTemplate.exchange(eq(customUrl), eq(HttpMethod.POST), any(HttpEntity.class), eq(String.class)))
+        when(restTemplate.exchange(
+                        eq(customUrl + "/push-mfa/enroll/complete"),
+                        eq(HttpMethod.POST),
+                        any(HttpEntity.class),
+                        eq(String.class)))
                 .thenReturn(keycloakResponse);
 
         ResponseEntity<String> response =

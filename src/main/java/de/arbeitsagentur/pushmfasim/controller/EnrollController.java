@@ -53,6 +53,7 @@ public class EnrollController {
         return "enroll-page";
     }
 
+    @SuppressWarnings("null")
     @PostMapping(path = "/complete")
     @ResponseBody
     public ResponseEntity<String> completeEnrollProcess(
@@ -139,7 +140,8 @@ public class EnrollController {
 
         Objects.requireNonNull(iamUrl, "iamUrl must not be null");
         Objects.requireNonNull(HttpMethod.POST, "httpMethod must not be null");
-        ResponseEntity<String> response = restTemplate.exchange(iamUrl, HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response =
+                restTemplate.exchange(iamUrl + "/push-mfa/enroll/complete", HttpMethod.POST, entity, String.class);
 
         logger.info("Enrollment request sent to {}. Response status: {}", iamUrl, response.getStatusCode());
 

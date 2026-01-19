@@ -1,5 +1,3 @@
-export const DEVICE_CLIENT_ID = 'push-device-client';
-export const DEVICE_CLIENT_SECRET = 'device-client-secret';
 import { ENROLL_COMPLETE, TOKEN_ENDPOINT } from './urls.js';
 
 export async function postEnrollComplete(enrollReplyToken: string, url?: URL) {
@@ -17,8 +15,8 @@ export async function postAccessToken(url: string, dPop: string) {
   };
   const body = new URLSearchParams({
     grant_type: 'client_credentials',
-    client_id: DEVICE_CLIENT_ID,
-    client_secret: DEVICE_CLIENT_SECRET,
+    client_id: window.ENV.clientId,
+    client_secret: window.ENV.clientSecret,
   });
   return await post(url + TOKEN_ENDPOINT, header, body);
 }

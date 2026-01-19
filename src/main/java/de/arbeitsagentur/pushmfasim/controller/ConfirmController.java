@@ -48,6 +48,12 @@ public class ConfirmController {
     @Value("${app.defaultIamUrl:http://localhost:8080/realms/demo}")
     private String defaultIamUrl;
 
+    @Value("${app.clientId:push-device-client}")
+    private String clientId;
+
+    @Value("${app.clientSecret:device-client-secret}")
+    private String clientSecret;
+
     private static final String DEVICE_ALIAS = "-device-alias-";
     private static final String DEVICE_STATIC_ID = "device-static-id";
     private static final String TOKEN_ENDPOINT = "/protocol/openid-connect/token";
@@ -272,11 +278,10 @@ public class ConfirmController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("DPoP", dPopToken);
+        logger.info("Requesting access token with client credentials {} and {}", clientId, clientSecret);
 
         // Use client credentials grant with device client ID/secret
-        String body = "grant_type=client_credentials"
-                + "&client_id=push-device-client"
-                + "&client_secret=device-client-secret";
+        String body = "grant_type=client_credentials" + "&client_id=" + clientId + "&client_secret=" + clientSecret;
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         try {

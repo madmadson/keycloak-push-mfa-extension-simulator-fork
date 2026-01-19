@@ -3,9 +3,11 @@
 ## Test Suite: ConfirmControllerTest
 
 ### Location
+
 `src/test/java/de/arbeitsagentur/pushmfasim/controller/ConfirmControllerTest.java`
 
 ### Quick Stats
+
 - **23 comprehensive unit tests**
 - **100% pass rate**
 - **~1.5 second execution time**
@@ -14,6 +16,7 @@
 ## Test Categories
 
 ### 1. Request Validation (5 tests)
+
 Tests that validate incoming request parameters and their default values.
 
 ```
@@ -25,6 +28,7 @@ Tests that validate incoming request parameters and their default values.
 ```
 
 ### 2. Action Processing (3 tests)
+
 Tests for action parameter handling and normalization.
 
 ```
@@ -34,6 +38,7 @@ Tests for action parameter handling and normalization.
 ```
 
 ### 3. User Verification (4 tests)
+
 Tests for user verification requirement logic.
 
 ```
@@ -44,6 +49,7 @@ Tests for user verification requirement logic.
 ```
 
 ### 4. Utility Methods (3 tests)
+
 Tests for the firstNonBlank priority selection helper.
 
 ```
@@ -53,6 +59,7 @@ Tests for the firstNonBlank priority selection helper.
 ```
 
 ### 5. Credential Handling (3 tests)
+
 Tests for extracting user ID from credential ID.
 
 ```
@@ -62,6 +69,7 @@ Tests for extracting user ID from credential ID.
 ```
 
 ### 6. Challenge Management (2 tests)
+
 Tests for finding challenges in pending list.
 
 ```
@@ -70,6 +78,7 @@ Tests for finding challenges in pending list.
 ```
 
 ### 7. Response Formatting (3 tests)
+
 Tests for response message structure and content.
 
 ```
@@ -81,21 +90,25 @@ Tests for response message structure and content.
 ## Running Tests
 
 ### All tests
+
 ```bash
 mvn test
 ```
 
 ### Specific test class
+
 ```bash
 mvn test -Dtest=ConfirmControllerTest
 ```
 
 ### Specific test method
+
 ```bash
 mvn test -Dtest=ConfirmControllerTest#testUserVerificationRequirementForApprove
 ```
 
 ### With verbose output
+
 ```bash
 mvn test -X
 ```
@@ -103,6 +116,7 @@ mvn test -X
 ## Test Dependencies
 
 The project uses `spring-boot-starter-test` which includes:
+
 - **JUnit 5** - Testing framework
 - **Mockito** - Mocking/stubbing
 - **Jackson** - JSON processing
@@ -111,6 +125,7 @@ The project uses `spring-boot-starter-test` which includes:
 ## Key Testing Patterns
 
 ### 1. Reflection for Private Methods
+
 ```java
 Method method = ConfirmController.class.getDeclaredMethod("methodName", String.class);
 method.setAccessible(true);
@@ -118,6 +133,7 @@ String result = (String) method.invoke(confirmController, "argument");
 ```
 
 ### 2. JWT Claim Validation
+
 ```java
 JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
     .claim("cid", "challenge-123")
@@ -126,17 +142,20 @@ JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 ```
 
 ### 3. Logic Testing Without Mocking
+
 Tests validate pure logic without mocking HTTP calls or external dependencies.
 
 ## Coverage Analysis
 
 ### Methods Tested
+
 - ✓ `completeEnrollProcess()` - Integration point (partial)
 - ✓ `extractUserIdFromCredentialId()` - Complete
 - ✓ `firstNonBlank()` - Complete
 - ✓ `showInfoPage()` - Complete
 
 ### Scenarios Covered
+
 - ✓ Default parameter values
 - ✓ Action normalization (APPROVE → approve)
 - ✓ User verification requirements
@@ -148,6 +167,7 @@ Tests validate pure logic without mocking HTTP calls or external dependencies.
 ## Maintenance
 
 ### Adding New Tests
+
 1. Follow naming convention: `test[What][Expected]`
 2. Use `@DisplayName` for clear descriptions
 3. Use `@Test` annotation
@@ -155,12 +175,15 @@ Tests validate pure logic without mocking HTTP calls or external dependencies.
 5. Run `mvn test` to verify
 
 ### Running After Changes
+
 After modifying `ConfirmController`:
+
 ```bash
 mvn test -Dtest=ConfirmControllerTest
 ```
 
 After any project changes:
+
 ```bash
 mvn spotless:apply verify
 ```
@@ -168,6 +191,7 @@ mvn spotless:apply verify
 ## Integration Testing Future Work
 
 The test suite focuses on unit testing. For full integration testing:
+
 - Add `@SpringBootTest` tests
 - Use `MockMvc` for HTTP endpoint testing
 - Test actual request/response cycles

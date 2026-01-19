@@ -54,10 +54,7 @@ onReady(() => {
       const formData = new FormData();
       formData.append('token', _token);
       if (_context) formData.append('context', _context);
-      formData.append(
-        'iamUrl',
-        _iamUrl ? _iamUrl.toString() : 'http://localhost:8080/realms/demo'
-      );
+      formData.append('iamUrl', _iamUrl ? _iamUrl.toString() : 'http://localhost:8080/realms/demo');
 
       const response = await fetch('./confirm/login', {
         method: 'POST',
