@@ -13,6 +13,9 @@ app:
   web:
     title: 'PushMFA-Simulator'
   env: 'dev'
+  # Default client credentials for device client defined in keycloak
+  clientId: 'push-device-client'
+  clientSecret: 'device-client-secret'
 
 server:
   port: 5000

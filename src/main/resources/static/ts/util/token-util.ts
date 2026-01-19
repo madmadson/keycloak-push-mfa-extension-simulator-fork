@@ -161,7 +161,7 @@ export async function createChallengeToken(
 }
 
 export function getCredentialId(userId: string, context: string) {
-  return `${context}${DEVICE_ALIAS}${userId}`;
+  return `${userId}${DEVICE_ALIAS}${context}`;
 }
 
 async function createDpopJwt(dpopPayload: DpopPayload) {

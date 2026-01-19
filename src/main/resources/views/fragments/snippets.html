@@ -8,6 +8,14 @@
       data-th-href="@{__${basepath}__/webjars/bootstrap/css/bootstrap.min.css}"
     />
     <link rel="stylesheet" type="text/css" data-th-href="@{__${basepath}__/css/layout.css}" />
+    <script th:inline="javascript">
+      window.ENV = window.ENV || {};
+      // JS string will be properly quoted/escaped by Thymeleaf
+      const clientId = /*[[${clientId}]]*/ '';
+      window.ENV.clientId = clientId;
+      const clientSecret = /*[[${clientSecret}]]*/ '';
+      window.ENV.clientSecret = clientSecret;
+    </script>
   </head>
   <body>
     <!-- ************************************************************************************** -->

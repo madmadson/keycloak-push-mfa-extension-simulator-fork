@@ -12,11 +12,16 @@ public class AppConfig {
 
     @Bean
     public ThymeleafViewResolver thymeleafViewResolver(
-            @Autowired SpringTemplateEngine templateEngine, @Value("${app.basepath}") String basePath) {
+            @Autowired SpringTemplateEngine templateEngine,
+            @Value("${app.basepath}") String basePath,
+            @Value("${app.clientId}") String clientId,
+            @Value("${app.clientSecret}") String clientSecret) {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setTemplateEngine(templateEngine);
         thymeleafViewResolver.setCharacterEncoding("UTF-8");
         thymeleafViewResolver.addStaticVariable("basepath", basePath);
+        thymeleafViewResolver.addStaticVariable("clientId", clientId);
+        thymeleafViewResolver.addStaticVariable("clientSecret", clientSecret);
         return thymeleafViewResolver;
     }
 }
