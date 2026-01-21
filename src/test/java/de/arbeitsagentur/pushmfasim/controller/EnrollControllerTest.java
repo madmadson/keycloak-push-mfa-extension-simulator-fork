@@ -13,17 +13,18 @@ import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -37,13 +38,13 @@ class EnrollControllerTest {
     @Mock
     private RestTemplate restTemplate;
 
-    @Mock
-    private Resource jwkResource;
-
     private EnrollController enrollController;
 
     private String validEnrollmentToken;
     private RSAKey rsaKey;
+
+    @TempDir
+    private Path tempDir;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -72,20 +73,20 @@ class EnrollControllerTest {
         signedJWT.sign(new RSASSASigner(rsaKey));
         validEnrollmentToken = signedJWT.serialize();
 
-        // Mock JWK resource - use an answer to create fresh input stream each time
+        // Create JWK file in temp directory
         String jwkJson = String.format(
                 "{\"public\":%s,\"private\":%s}", rsaKey.toPublicJWK().toJSONString(), rsaKey.toJSONString());
-
-        when(jwkResource.getInputStream()).thenAnswer(invocation -> new ByteArrayInputStream(jwkJson.getBytes()));
+        Path jwkFile = tempDir.resolve("rsa-jwk.json");
+        Files.write(jwkFile, jwkJson.getBytes());
 
         // Inject mocks and resources
         Field restTemplateField = EnrollController.class.getDeclaredField("restTemplate");
         restTemplateField.setAccessible(true);
         restTemplateField.set(enrollController, restTemplate);
 
-        Field jwkResourceField = EnrollController.class.getDeclaredField("jwkResource");
-        jwkResourceField.setAccessible(true);
-        jwkResourceField.set(enrollController, jwkResource);
+        Field jwkPathField = EnrollController.class.getDeclaredField("jwkPath");
+        jwkPathField.setAccessible(true);
+        jwkPathField.set(enrollController, jwkFile.toString());
 
         // Set default IAM URL
         Field defaultIamUrlField = EnrollController.class.getDeclaredField("defaultIamUrl");

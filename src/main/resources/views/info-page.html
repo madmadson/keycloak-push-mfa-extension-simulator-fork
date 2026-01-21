@@ -22,7 +22,7 @@
                 authentication. Users can enroll their devices to receive push notifications for MFA
                 challenges.
               </p>
-              <a href="./enroll" class="btn btn-primary">Go to Enrollment</a>
+              <a th:href="@{__${basepath}__/enroll}" class="btn btn-primary">Go to Enrollment</a>
             </div>
           </div>
         </div>
@@ -38,7 +38,9 @@
                 valid request is made to /complete, it triggers a push notification from Keycloak to
                 the enrolled device.
               </p>
-              <a href="./confirm" class="btn btn-primary">Go to Confirm Login</a>
+              <a th:href="@{__${basepath}__/confirm}" class="btn btn-primary"
+                >Go to Confirm Login</a
+              >
             </div>
           </div>
         </div>

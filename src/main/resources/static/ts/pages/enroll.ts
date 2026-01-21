@@ -91,7 +91,7 @@ onReady(() => {
         return;
       }
       const enrollmentJwt = await createEnrollmentJwt(enrollmentValues, _context);
-      const keycloakResponse = await postEnrollComplete(enrollmentJwt, _iamUrl as URL);
+      const keycloakResponse = await postEnrollComplete(enrollmentJwt, _iamUrl as URL, _token);
 
       if (!keycloakResponse.ok) {
         const keycloakError = await keycloakResponse.text();

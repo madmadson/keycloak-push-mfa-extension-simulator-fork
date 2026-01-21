@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +43,8 @@ public class EnrollController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("classpath:static/keys/rsa-jwk.json")
-    private Resource jwkResource;
+    @Value("${app.jwk.path:static/keys/rsa-jwk.json}")
+    private String jwkPath;
 
     @Value("${app.enroll.complete.url:http://localhost:8080/realms/demo/push-mfa/enroll/complete}")
     private String defaultIamUrl;
@@ -85,7 +86,19 @@ public class EnrollController {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ClassPathResource jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+
+        // Versuche zuerst vom Dateisystem zu laden (für K8s-Deployment mit volumeMount)
+        Resource jwkResource;
+        try {
+            jwkResource = new FileSystemResource(jwkPath);
+            if (!jwkResource.exists()) {
+                // Fallback auf Classpath für lokale Entwicklung
+                jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+            }
+        } catch (Exception e) {
+            // Fallback auf Classpath
+            jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+        }
 
         JsonNode root = objectMapper.readTree(jwkResource.getInputStream());
         JsonNode publicNode = root.get("public");

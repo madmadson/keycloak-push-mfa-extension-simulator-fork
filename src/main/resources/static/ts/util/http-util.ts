@@ -1,24 +1,35 @@
 import { ENROLL_COMPLETE, TOKEN_ENDPOINT } from './urls.js';
 
-export async function postEnrollComplete(enrollReplyToken: string, url?: URL) {
+export async function postEnrollComplete(enrollReplyToken: string, url?: URL, authToken?: string) {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  };
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
   return await post(
     url?.toString() + ENROLL_COMPLETE,
-    { 'Content-Type': 'application/json' },
+    headers,
     JSON.stringify({ token: enrollReplyToken })
   );
 }
 
-export async function postAccessToken(url: string, dPop: string) {
-  const header = {
+export async function postAccessToken(url: string, dPop: string, authToken?: string) {
+  const headers: HeadersInit = {
     'Content-Type': 'application/x-www-form-urlencoded',
     DPoP: dPop,
   };
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
   const body = new URLSearchParams({
     grant_type: 'client_credentials',
     client_id: window.ENV.clientId,
     client_secret: window.ENV.clientSecret,
   });
-  return await post(url + TOKEN_ENDPOINT, header, body);
+  return await post(url + TOKEN_ENDPOINT, headers, body);
 }
 
 export async function postChallengesResponse(
