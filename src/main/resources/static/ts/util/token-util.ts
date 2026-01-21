@@ -29,12 +29,14 @@ export type EnrollmentValues = {
   enrollmentId: string;
   nonce: string;
   userId: string;
+  iss?: string;
 };
 
 export type ConfirmLoginValues = {
   challengeId: string;
   credId: string;
   userVerification?: string;
+  iss?: string;
 };
 
 export function unpackEnrollmentToken(token: string): EnrollmentValues | null {
@@ -42,11 +44,12 @@ export function unpackEnrollmentToken(token: string): EnrollmentValues | null {
   const enrollmentId = enrollPayload.enrollmentId as string | undefined;
   const nonce = enrollPayload.nonce as string | undefined;
   const userId = enrollPayload.sub as string | undefined;
+  const iss = enrollPayload.iss as string | undefined;
 
   if (!enrollmentId || !nonce || !userId) {
     return null;
   }
-  return { enrollmentId, nonce, userId };
+  return { enrollmentId, nonce, userId, iss };
 }
 
 export async function createEnrollmentJwt(enrollmentValues: EnrollmentValues, context: string) {
@@ -85,11 +88,12 @@ export function unpackLoginConfirmToken(token: string): ConfirmLoginValues | nul
 
   const challengeId = confirmPayload.cid as string | undefined;
   const credId = confirmPayload.credId as string | undefined;
+  const iss = confirmPayload.iss as string | undefined;
 
   if (!challengeId || !credId) {
     return null;
   }
-  return { challengeId, credId };
+  return { challengeId, credId, iss };
 }
 
 export function extractUserIdFromCredentialId(credentialId: string): string | null {

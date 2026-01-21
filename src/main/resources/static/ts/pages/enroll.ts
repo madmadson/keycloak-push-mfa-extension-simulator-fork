@@ -18,8 +18,28 @@ onReady(() => {
   const enrollBtnBackend = getById<HTMLInputElement>('enrollBtnBackend');
 
   tokenEl.value = qs.get('token') ?? '';
-  contextEl.value = qs.get('context') ?? '';
-  iamUrlEl.value = qs.get('url') ?? '';
+
+  // Function to extract issuer from token and set iamUrl
+  const updateIamUrlFromToken = () => {
+    const token = tokenEl.value.trim();
+    if (token) {
+      try {
+        const enrollmentValues = unpackEnrollmentToken(token);
+        if (enrollmentValues?.iss) {
+          iamUrlEl.value = enrollmentValues.iss;
+        }
+      } catch (e) {
+        // Silently ignore token parsing errors
+      }
+    }
+  };
+
+  // Extract issuer from token on page load
+  updateIamUrlFromToken();
+
+  // Update iamUrl when token is changed
+  tokenEl.addEventListener('change', updateIamUrlFromToken);
+  tokenEl.addEventListener('input', updateIamUrlFromToken);
 
   createJwkBtn.addEventListener('click', async () => {
     await createNewKeyPair();

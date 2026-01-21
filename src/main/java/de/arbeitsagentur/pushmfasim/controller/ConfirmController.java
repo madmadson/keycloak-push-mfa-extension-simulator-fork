@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +42,9 @@ public class ConfirmController {
     private static final Logger logger = LoggerFactory.getLogger(ConfirmController.class);
 
     private final RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${app.jwk.path:static/keys/rsa-jwk.json}")
+    private String jwkPath;
 
     @Value("classpath:static/keys/rsa-jwk.json")
     private Resource jwkResource;
@@ -66,6 +70,7 @@ public class ConfirmController {
 
     @PostMapping(path = "/login")
     @ResponseBody
+    @SuppressWarnings("null")
     public ResponseEntity<String> completeEnrollProcess(
             @RequestParam String token,
             @RequestParam(required = false) String context,
@@ -116,7 +121,20 @@ public class ConfirmController {
         try {
             // Load JWK keys
             ObjectMapper objectMapper = new ObjectMapper();
-            ClassPathResource jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+
+            // Versuche zuerst vom Dateisystem zu laden (für K8s-Deployment mit volumeMount)
+            Resource jwkResource;
+            try {
+                jwkResource = new FileSystemResource(jwkPath);
+                if (!jwkResource.exists()) {
+                    // Fallback auf Classpath für lokale Entwicklung
+                    jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+                }
+            } catch (Exception e) {
+                // Fallback auf Classpath
+                jwkResource = new ClassPathResource("static/keys/rsa-jwk.json");
+            }
+
             JsonNode root = objectMapper.readTree(jwkResource.getInputStream());
             JsonNode privateNode = root.get("private");
 

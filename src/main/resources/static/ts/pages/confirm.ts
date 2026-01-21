@@ -27,9 +27,29 @@ onReady(() => {
   const userVerificationEl = getById<HTMLInputElement>('userVerification');
 
   tokenEl.value = qs.get('token') ?? '';
-  iamUrlEl.value = qs.get('url') ?? '';
   contextEl.value = qs.get('context') ?? '';
   userVerificationEl.value = qs.get('userVerification') ?? '';
+
+  // Function to extract issuer from token and set iamUrl
+  const updateIamUrlFromToken = () => {
+    const token = tokenEl.value.trim();
+    if (token) {
+      try {
+        const confirmTokenValues = unpackLoginConfirmToken(token);
+        if (confirmTokenValues?.iss) {
+          iamUrlEl.value = confirmTokenValues.iss;
+        }
+      } catch (e) {
+        // Silently ignore token parsing errors
+      }
+    }
+  };
+  // Extract issuer from token on page load
+  updateIamUrlFromToken();
+
+  // Update iamUrl when token is changed
+  tokenEl.addEventListener('change', updateIamUrlFromToken);
+  tokenEl.addEventListener('input', updateIamUrlFromToken);
 
   confirmBtnBackendEl.addEventListener('click', async (_e) => {
     const _token = tokenEl.value.trim();
