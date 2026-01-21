@@ -235,115 +235,115 @@ curl -k -v https://myapp.local/mock/info
 
 ### Network & Connectivity Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| `myapp.local` not resolving | Hosts file not updated        | Add `127.0.0.1 myapp.local` to `/etc/hosts` (Linux/macOS) or `C:\Windows\System32\drivers\etc\hosts` (Windows)           |
-| Cannot reach host services  | Docker networking issue       | Verify `--add-host=host.docker.internal:host-gateway` in docker run command |
-| 502 Bad Gateway             | Backend service not running   | Ensure Keycloak (port 8080) and mock simulator (port 5000) are running     |
-| 504 Gateway Timeout         | Slow backend response         | Increase nginx proxy timeouts in `nginx.conf`: `proxy_connect_timeout 60s;` |
-| Connection refused          | Wrong port or service stopped | Check service is listening: `netstat -tlnp \| grep :5000` or `lsof -i :5000` |
+| Issue                       | Cause                         | Solution                                                                                                       |
+| --------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `myapp.local` not resolving | Hosts file not updated        | Add `127.0.0.1 myapp.local` to `/etc/hosts` (Linux/macOS) or `C:\Windows\System32\drivers\etc\hosts` (Windows) |
+| Cannot reach host services  | Docker networking issue       | Verify `--add-host=host.docker.internal:host-gateway` in docker run command                                    |
+| 502 Bad Gateway             | Backend service not running   | Ensure Keycloak (port 8080) and mock simulator (port 5000) are running                                         |
+| 504 Gateway Timeout         | Slow backend response         | Increase nginx proxy timeouts in `nginx.conf`: `proxy_connect_timeout 60s;`                                    |
+| Connection refused          | Wrong port or service stopped | Check service is listening: `netstat -tlnp \| grep :5000` or `lsof -i :5000`                                   |
 
 ### SSL & Certificate Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| SSL certificate error       | Self-signed or untrusted cert | Add `-k` to curl, accept in browser warning, or import cert to system trust store |
-| Certificate expired         | Self-signed cert passed expiration | Regenerate certificate with `openssl req -x509 -newkey rsa:4096 ...` |
-| NET::ERR_CERT_AUTHORITY_INVALID | Browser doesn't trust cert | For development: accept the risk, or configure Chrome with `--ignore-certificate-errors` |
-| `openssl` command not found | OpenSSL not installed         | Install: `sudo apt-get install openssl` (Ubuntu/Debian) or `brew install openssl` (macOS) |
+| Issue                           | Cause                              | Solution                                                                                  |
+| ------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------- |
+| SSL certificate error           | Self-signed or untrusted cert      | Add `-k` to curl, accept in browser warning, or import cert to system trust store         |
+| Certificate expired             | Self-signed cert passed expiration | Regenerate certificate with `openssl req -x509 -newkey rsa:4096 ...`                      |
+| NET::ERR_CERT_AUTHORITY_INVALID | Browser doesn't trust cert         | For development: accept the risk, or configure Chrome with `--ignore-certificate-errors`  |
+| `openssl` command not found     | OpenSSL not installed              | Install: `sudo apt-get install openssl` (Ubuntu/Debian) or `brew install openssl` (macOS) |
 
 ### CORS Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| CORS still occurring        | Proxy not properly configured | Verify `X-Forwarded-*` headers are present in `nginx.conf` |
-| CORS origin mismatch        | Frontend and backend on different origins | Ensure both use same protocol/host/port through nginx proxy |
-| `Access-Control-Allow-Origin` header missing | Backend CORS not configured | Check Spring Boot CORS configuration in backend, or proxy headers |
+| Issue                                        | Cause                                     | Solution                                                          |
+| -------------------------------------------- | ----------------------------------------- | ----------------------------------------------------------------- |
+| CORS still occurring                         | Proxy not properly configured             | Verify `X-Forwarded-*` headers are present in `nginx.conf`        |
+| CORS origin mismatch                         | Frontend and backend on different origins | Ensure both use same protocol/host/port through nginx proxy       |
+| `Access-Control-Allow-Origin` header missing | Backend CORS not configured               | Check Spring Boot CORS configuration in backend, or proxy headers |
 
 ### Docker Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Docker daemon not running   | Docker service stopped        | Start Docker: `sudo systemctl start docker` (Linux) or open Docker Desktop (Windows/macOS) |
-| Cannot connect to Docker    | Permission issue              | Add user to docker group: `sudo usermod -aG docker $USER` and logout/login |
-| Image not found             | Image not pulled/built        | Pull or build image: `docker pull nginx:alpine` or `docker build -t name .` |
-| Port already in use         | Another service using port    | Find process: `sudo lsof -i :443` and kill it, or use different port |
-| Container exited           | Service crashed               | Check logs: `docker logs <container-name>` for error messages |
+| Issue                     | Cause                      | Solution                                                                                   |
+| ------------------------- | -------------------------- | ------------------------------------------------------------------------------------------ |
+| Docker daemon not running | Docker service stopped     | Start Docker: `sudo systemctl start docker` (Linux) or open Docker Desktop (Windows/macOS) |
+| Cannot connect to Docker  | Permission issue           | Add user to docker group: `sudo usermod -aG docker $USER` and logout/login                 |
+| Image not found           | Image not pulled/built     | Pull or build image: `docker pull nginx:alpine` or `docker build -t name .`                |
+| Port already in use       | Another service using port | Find process: `sudo lsof -i :443` and kill it, or use different port                       |
+| Container exited          | Service crashed            | Check logs: `docker logs <container-name>` for error messages                              |
 
 ### Java & Maven Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| `java: command not found`   | Java not installed            | Install Java 21: Use `sdk install java 21.0.1-tem` (sdkman) or download from oracle.com |
-| Wrong Java version          | Multiple Java versions installed | Check: `java -version`, switch with `sdk use java 21.0.1-tem` (sdkman) |
-| `mvn: command not found`    | Maven not in PATH             | Install Maven or add to PATH, verify with `mvn -version` |
-| Build fails: `target/classes not found` | Stale build artifacts | Run `mvn clean` before building |
-| Compilation errors after code changes | Stale compiler cache | Clear target: `rm -rf target/` and rebuild |
-| Tests fail with encoding errors | Character encoding issue | Add to Maven: `<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>` |
+| Issue                                   | Cause                            | Solution                                                                                |
+| --------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------- |
+| `java: command not found`               | Java not installed               | Install Java 21: Use `sdk install java 21.0.1-tem` (sdkman) or download from oracle.com |
+| Wrong Java version                      | Multiple Java versions installed | Check: `java -version`, switch with `sdk use java 21.0.1-tem` (sdkman)                  |
+| `mvn: command not found`                | Maven not in PATH                | Install Maven or add to PATH, verify with `mvn -version`                                |
+| Build fails: `target/classes not found` | Stale build artifacts            | Run `mvn clean` before building                                                         |
+| Compilation errors after code changes   | Stale compiler cache             | Clear target: `rm -rf target/` and rebuild                                              |
+| Tests fail with encoding errors         | Character encoding issue         | Add to Maven: `<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>`      |
 
 ### Application Runtime Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Application won't start     | Port already in use           | Change port in `application.yaml` or kill process using port 5000 |
-| TypeScript compilation errors | Node.js not installed        | Maven frontend plugin handles this, or manually install Node 20.11.1 |
-| Template not rendering      | Thymeleaf template missing    | Check file exists in `src/main/resources/views/` with correct name |
-| Static resources 404        | Resources not copied to target | Run `mvn clean compile` to rebuild and copy resources |
-| Bundle not loaded           | JavaScript bundle missing     | Run `npm run build` to generate bundles in `static/js/` |
+| Issue                         | Cause                          | Solution                                                             |
+| ----------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| Application won't start       | Port already in use            | Change port in `application.yaml` or kill process using port 5000    |
+| TypeScript compilation errors | Node.js not installed          | Maven frontend plugin handles this, or manually install Node 20.11.1 |
+| Template not rendering        | Thymeleaf template missing     | Check file exists in `src/main/resources/views/` with correct name   |
+| Static resources 404          | Resources not copied to target | Run `mvn clean compile` to rebuild and copy resources                |
+| Bundle not loaded             | JavaScript bundle missing      | Run `npm run build` to generate bundles in `static/js/`              |
 
 ### Testing Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
+| Issue                         | Cause                       | Solution                                                                |
+| ----------------------------- | --------------------------- | ----------------------------------------------------------------------- |
 | Tests fail: JWT parsing error | Invalid test JWT token      | Use tokens generated with valid RSA key from `static/keys/rsa-jwk.json` |
-| Tests timeout               | Slow mock creation            | Increase timeout in test or optimize mocks with Mockito |
-| `@SpringBootTest` fails     | Spring context not loading    | Check `application.yaml` and Spring configuration beans |
-| Test reports not generated  | Surefire plugin issue         | Run: `mvn surefire-report:report` to generate HTML reports |
-| Test class not found        | Incorrect package structure   | Tests must be in `src/test/java/de/arbeitsagentur/pushmfasim/...` |
+| Tests timeout                 | Slow mock creation          | Increase timeout in test or optimize mocks with Mockito                 |
+| `@SpringBootTest` fails       | Spring context not loading  | Check `application.yaml` and Spring configuration beans                 |
+| Test reports not generated    | Surefire plugin issue       | Run: `mvn surefire-report:report` to generate HTML reports              |
+| Test class not found          | Incorrect package structure | Tests must be in `src/test/java/de/arbeitsagentur/pushmfasim/...`       |
 
 ### Debugging Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Breakpoint not hit          | Debug mode not enabled        | Start with: `mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"` |
-| Cannot attach debugger      | JDWP port not exposed        | Check debug server is listening on port 5005: `netstat -tlnp \| grep 5005` |
-| Variable values not visible | Wrong stack frame selected    | Ensure you're on correct frame in VS Code debug panel |
-| Stepping doesn't work       | Source not compiled with debug info | Rebuild with `-g` flag in compiler options |
+| Issue                       | Cause                               | Solution                                                                                                                              |
+| --------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Breakpoint not hit          | Debug mode not enabled              | Start with: `mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"` |
+| Cannot attach debugger      | JDWP port not exposed               | Check debug server is listening on port 5005: `netstat -tlnp \| grep 5005`                                                            |
+| Variable values not visible | Wrong stack frame selected          | Ensure you're on correct frame in VS Code debug panel                                                                                 |
+| Stepping doesn't work       | Source not compiled with debug info | Rebuild with `-g` flag in compiler options                                                                                            |
 
 ### Frontend Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Enroll/Confirm page showing blank | Bundle not loaded | Check browser console for 404s, verify bundle exists in `target/static/js/` |
-| TypeScript errors in console | Source map missing            | Ensure `npm run build` generated `.map` files alongside bundles |
-| Styling not applied         | CSS bundle not loaded         | Check `static/css/layout.css` exists and is referenced in template |
-| Form submission fails       | CSRF token missing            | Ensure hidden CSRF token in form with name `_csrf` |
+| Issue                             | Cause                 | Solution                                                                    |
+| --------------------------------- | --------------------- | --------------------------------------------------------------------------- |
+| Enroll/Confirm page showing blank | Bundle not loaded     | Check browser console for 404s, verify bundle exists in `target/static/js/` |
+| TypeScript errors in console      | Source map missing    | Ensure `npm run build` generated `.map` files alongside bundles             |
+| Styling not applied               | CSS bundle not loaded | Check `static/css/layout.css` exists and is referenced in template          |
+| Form submission fails             | CSRF token missing    | Ensure hidden CSRF token in form with name `_csrf`                          |
 
 ### Performance & Optimization
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Slow page load              | Large bundles                 | Run `npm run build` to optimize, check bundle size with `npm run build -- --analyze` |
-| High memory usage           | Memory leak in application    | Profile with VisualVM or JProfiler, check for unclosed resources |
-| Slow API responses          | N+1 query problem             | Review database queries, use proper caching and lazy loading |
+| Issue              | Cause                      | Solution                                                                             |
+| ------------------ | -------------------------- | ------------------------------------------------------------------------------------ |
+| Slow page load     | Large bundles              | Run `npm run build` to optimize, check bundle size with `npm run build -- --analyze` |
+| High memory usage  | Memory leak in application | Profile with VisualVM or JProfiler, check for unclosed resources                     |
+| Slow API responses | N+1 query problem          | Review database queries, use proper caching and lazy loading                         |
 
 ### Development Workflow Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Changes not reflected       | Watch mode not running        | Start watch: `npm run dev` in separate terminal |
-| Formatting issues at commit | Spotless not enforced         | Run `mvn spotless:apply` before committing |
-| Linting errors prevent build | ESLint strict mode           | Fix with `npm run lint:fix` or disable specific rules in `.eslintrc` |
-| Code not formatted correctly | Prettier not applied          | Run `npm run format` before committing |
+| Issue                        | Cause                  | Solution                                                             |
+| ---------------------------- | ---------------------- | -------------------------------------------------------------------- |
+| Changes not reflected        | Watch mode not running | Start watch: `npm run dev` in separate terminal                      |
+| Formatting issues at commit  | Spotless not enforced  | Run `mvn spotless:apply` before committing                           |
+| Linting errors prevent build | ESLint strict mode     | Fix with `npm run lint:fix` or disable specific rules in `.eslintrc` |
+| Code not formatted correctly | Prettier not applied   | Run `npm run format` before committing                               |
 
 ### Environment & Configuration Issues
 
-| Issue                       | Cause                         | Solution                                              |
-| --------------------------- | ----------------------------- | ----------------------------------------------------- |
-| Application won't connect to Keycloak | Wrong Keycloak URL       | Check `KEYCLOAK_URL` environment variable and ensure Keycloak is reachable |
-| Client credentials not loaded | Missing `.env` file          | Create `.env` file with `CLIENT_ID` and `CLIENT_SECRET` values |
-| Realm configuration missing  | Demo realm not imported      | Import `config/demo-realm.json` to Keycloak admin console |
-| DPoP token validation fails  | Missing DPoP header           | Ensure frontend includes DPoP-Proof header in requests to `/realms/<realm>/push-mfa/...` |
+| Issue                                 | Cause                   | Solution                                                                                 |
+| ------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| Application won't connect to Keycloak | Wrong Keycloak URL      | Check `KEYCLOAK_URL` environment variable and ensure Keycloak is reachable               |
+| Client credentials not loaded         | Missing `.env` file     | Create `.env` file with `CLIENT_ID` and `CLIENT_SECRET` values                           |
+| Realm configuration missing           | Demo realm not imported | Import `config/demo-realm.json` to Keycloak admin console                                |
+| DPoP token validation fails           | Missing DPoP header     | Ensure frontend includes DPoP-Proof header in requests to `/realms/<realm>/push-mfa/...` |
 
 ## Configuration
 
