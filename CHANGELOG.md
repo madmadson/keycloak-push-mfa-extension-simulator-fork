@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.2.0...v1.3.0) (2026-01-23)
+
+
+### Documentation
+
+* add readme for fcm mock ([#19](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/issues/19)) ([e23f1ef](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/e23f1ef99319c4838970af1cb7f078db29173a73))
+
 ## [1.2.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.1.0...v1.2.0) (2026-01-21)
 
 
