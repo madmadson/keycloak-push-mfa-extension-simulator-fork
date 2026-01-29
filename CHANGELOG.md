@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.3.0...v1.4.0) (2026-01-29)
+
+
+### Features
+
+* show firebase mock messages on ui ([f2dec1d](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/commit/f2dec1da400ec35389c9c0e59de4d511775f3799))
+
 ## [1.3.0](https://github.com/ba-itsys/keycloak-push-mfa-extension-simulator/compare/v1.2.0...v1.3.0) (2026-01-23)
 
 
